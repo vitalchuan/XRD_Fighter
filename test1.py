@@ -4,7 +4,7 @@ Created on Tue Oct 13 09:58:46 2020
 
 @author: 何奇川
 """
-import time
+from time import sleep
 import pytesseract
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
@@ -35,20 +35,29 @@ vertification_code_img.save('vertification_code_img.png') # 保存我们接下�
 sharp_img = ImageEnhance.Contrast(vertification_code_img).enhance(2.0)
 sharp_img.save("sharpImg.png")
 
-code = pytesseract.image_to_string(sharp_img).strip()
+code = pytesseract.image_to_string(sharp_img).replace(" ", "")
 print(code)
 
 input = browser.find_element_by_xpath('//*[@id="captcha"]')
 input.send_keys(code)
-button = browser.find_element_by_xpath('//*[@id="submit-button"]')
-button.click()
+#button = browser.find_element_by_xpath('//*[@id="submit-button"]')
+#button.click()
 
-browser.find_element_by_xpath('//*[@id="table_equipments_follow_equipments"]/tbody/tr[1]/td[2]/div/strong/a').click(); # XRD
+browser.find_element_by_xpath('/html/body/table/tbody/tr[2]/td[2]/div/div/table/tbody/tr[1]/td[2]/div/strong/a').click(); # XRD
 browser.find_element_by_xpath('/html/body/table/tbody/tr[2]/td[2]/div/div/div[4]/div/span/span/span/a[2]').click() # 使用预约
-Thread.sleep(1000)
-js ="document.getElementById('calendar_right_nav_5f85c3d6689fa').children[1].click()"  # js点击元素
-browser.execute_script(js)
-#implicitly_wait(500)
-#browser.find_element_by_xpath('/html/body/table/tbody/tr[2]/td[2]/div/div/div[5]/table[2]/thead/tr[1]/td/div/div[1]/a[2]').click() # 下一周
+#browser.implicitly_wait(30)
+sleep(2)
+browser.find_element_by_xpath('/html/body/table/tbody/tr[2]/td[2]/div/div/div[5]/table[2]/thead/tr[1]/td/div/div[1]/a[2]').click() # 下一周
 
+sleep(2)
+action = ActionChains(browser)
 
+#下滑到底部
+browser.execute_script('window.scrollTo(0,1000)')
+
+#移动鼠标
+action.move_to_element(browser.find_element_by_xpath('/html/body/table/tbody/tr[2]/td[2]/div/div/div[5]/table[2]/tbody[3]/tr[38]/td[5]'))
+sleep(1)
+
+action.double_click(browser.find_element_by_xpath('/html/body/table/tbody/tr[2]/td[2]/div/div/div[5]/table[2]/tbody[2]/tr/td[2]/div/div[2]'))
+/html/body/div[2]
